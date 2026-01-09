@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -16,7 +15,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
  * while still allowing full power at the extremes.
  */
 @TeleOp(name = "Chapter 7_2", group = "Exercises")
-@Disabled
 public class Chapter7_2 extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
 

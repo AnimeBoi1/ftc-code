@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -14,7 +13,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * - theta: angle from positive x-axis
  */
 @TeleOp(name = "Chapter 19_1", group = "Exercises")
-@Disabled
 public class Chapter19_1 extends OpMode {
 
     /**

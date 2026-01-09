@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -19,7 +18,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
  * Modify ProgrammingBoard.init() to add these settings for the servo
  */
 @TeleOp(name = "Chapter 8_1", group = "Exercises")
-@Disabled
 public class Chapter8_1 extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
 

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -21,7 +20,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * This OpMode demonstrates gamepad LED control as an example.
  */
 @TeleOp(name = "Chapter 18_2", group = "Exercises")
-@Disabled
 public class Chapter18_2 extends OpMode {
     double hue = 0;
 

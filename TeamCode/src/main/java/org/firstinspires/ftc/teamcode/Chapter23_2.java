@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -24,7 +23,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * - Consider using rumble patterns (blips) rather than continuous rumble
  */
 @TeleOp(name = "Chapter 23_2", group = "Exercises")
-@Disabled
 public class Chapter23_2 extends OpMode {
 
     // TODO: Add Limelight

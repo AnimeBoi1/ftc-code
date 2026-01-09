@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -12,7 +11,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * This demonstrates using arrays and cycling through them.
  */
 @TeleOp(name = "Chapter 13_1", group = "Exercises")
-@Disabled
 public class Chapter13_1 extends OpMode {
     // Array of song lyrics (using "Twinkle Twinkle Little Star" as an example)
     String[] lyrics = {

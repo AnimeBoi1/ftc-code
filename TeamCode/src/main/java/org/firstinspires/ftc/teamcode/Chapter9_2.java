@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -14,7 +13,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
  * Prerequisites: Complete Exercise 9.1 first (getPotPosition method)
  */
 @TeleOp(name = "Chapter 9_2", group = "Exercises")
-@Disabled
 public class Chapter9_2 extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
 

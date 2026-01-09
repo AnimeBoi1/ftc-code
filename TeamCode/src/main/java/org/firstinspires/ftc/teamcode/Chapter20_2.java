@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,7 +12,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * reduced rotation speed for better control.
  */
 @TeleOp(name = "Chapter 20_2", group = "Exercises")
-@Disabled
 public class Chapter20_2 extends OpMode {
     DcMotor frontLeft;
     DcMotor frontRight;

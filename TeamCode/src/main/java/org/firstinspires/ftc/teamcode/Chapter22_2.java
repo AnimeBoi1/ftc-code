@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -20,7 +19,6 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
  * This example uses REV Digital LED Indicator (simplest option)
  */
 @TeleOp(name = "Chapter 22_2", group = "Exercises")
-@Disabled
 public class Chapter22_2 extends OpMode {
     ColorSensor colorSensor;
     DigitalChannel greenLed;

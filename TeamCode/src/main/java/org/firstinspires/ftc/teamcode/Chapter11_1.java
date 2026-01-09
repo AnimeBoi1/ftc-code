@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -12,7 +11,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
  * Change the OpMode to show the heading in RADIANS as well as DEGREES.
  */
 @TeleOp(name = "Chapter 11_1", group = "Exercises")
-@Disabled
 public class Chapter11_1 extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
 
@@ -25,10 +23,9 @@ public class Chapter11_1 extends OpMode {
     @Override
     public void loop() {
         double headingDegrees = board.getHeading(AngleUnit.DEGREES);
-        // TODO: Also get heading in radians
-        // double headingRadians = board.getHeading(AngleUnit.RADIANS);
+        double headingRadians = board.getHeading(AngleUnit.RADIANS);
 
         telemetry.addData("Heading (degrees)", headingDegrees);
-        // telemetry.addData("Heading (radians)", headingRadians);
+        telemetry.addData("Heading (radians)", headingRadians);
     }
 }

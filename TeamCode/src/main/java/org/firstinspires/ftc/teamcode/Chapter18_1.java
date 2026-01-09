@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -17,7 +16,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * Note: The Driver Station must have text-to-speech enabled.
  */
 @TeleOp(name = "Chapter 18_1", group = "Exercises")
-@Disabled
 public class Chapter18_1 extends OpMode {
     boolean hasSpoken = false;
     boolean wasA = false;

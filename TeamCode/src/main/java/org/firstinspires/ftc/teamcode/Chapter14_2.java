@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -23,7 +22,6 @@ import java.util.ArrayList;
  * 2. Add TestServo to the getTests() method in ProgrammingBoard
  */
 @TeleOp(name = "Chapter 14_2", group = "Exercises")
-@Disabled
 public class Chapter14_2 extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
     ArrayList<TestItem> tests = new ArrayList<>();

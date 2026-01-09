@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -13,7 +12,6 @@ import java.util.ArrayList;
  * This demonstrates using ArrayList which can grow dynamically.
  */
 @TeleOp(name = "Chapter 13_2", group = "Exercises")
-@Disabled
 public class Chapter13_2 extends OpMode {
     // ArrayList of song lyrics
     ArrayList<String> lyrics = new ArrayList<>();

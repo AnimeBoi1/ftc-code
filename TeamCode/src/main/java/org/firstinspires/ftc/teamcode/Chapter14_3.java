@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -38,7 +37,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * - Coupling between classes increases
  */
 @TeleOp(name = "Chapter 14_3", group = "Exercises")
-@Disabled
 public class Chapter14_3 extends OpMode {
 
     @Override

@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
@@ -15,7 +14,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
  * This demonstrates state machine programming with timed transitions.
  */
 @Autonomous(name = "Chapter 12_1", group = "Exercises")
-@Disabled
 public class Chapter12_1 extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
 

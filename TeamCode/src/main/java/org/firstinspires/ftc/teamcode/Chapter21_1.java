@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 /**
@@ -27,7 +26,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
  * - AprilTags visible on the field
  */
 @Autonomous(name = "Chapter 21_1", group = "Exercises")
-@Disabled
 public class Chapter21_1 extends OpMode {
 
     // TODO: Add SparkFunOTOS sensor

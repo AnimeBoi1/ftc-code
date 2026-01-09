@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 /**
@@ -29,7 +28,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
  * - Value: Medium to High (> 100)
  */
 @Autonomous(name = "Chapter 23_1", group = "Exercises")
-@Disabled
 public class Chapter23_1 extends OpMode {
 
     // TODO: Add Limelight

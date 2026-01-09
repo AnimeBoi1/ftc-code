@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -18,7 +17,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
  *    Hint: pot.getMaxVoltage() gives you the max voltage
  */
 @TeleOp(name = "Chapter 9_1", group = "Exercises")
-@Disabled
 public class Chapter9_1 extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
 

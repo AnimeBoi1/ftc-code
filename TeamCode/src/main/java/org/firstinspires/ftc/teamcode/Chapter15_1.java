@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -14,7 +13,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
  * This demonstrates gamepad rumble feedback based on sensor input.
  */
 @TeleOp(name = "Chapter 15_1", group = "Exercises")
-@Disabled
 public class Chapter15_1 extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
     boolean wasPressed = false;

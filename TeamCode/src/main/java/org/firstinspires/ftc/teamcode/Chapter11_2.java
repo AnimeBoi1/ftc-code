@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -18,7 +17,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
  * but you'll need to scale it (divide by 180 or similar)
  */
 @TeleOp(name = "Chapter 11_2", group = "Exercises")
-@Disabled
 public class Chapter11_2 extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
 
@@ -31,12 +29,10 @@ public class Chapter11_2 extends OpMode {
     @Override
     public void loop() {
         double heading = board.getHeading(AngleUnit.DEGREES);
-
-        // TODO: Set motor speed based on heading
-        // Heading ranges from -180 to 180 degrees
-        // Motor power should be -1.0 to 1.0
-        // Consider: motorSpeed = heading / 180.0
+        double motorSpeed = heading / 180.0;
+        board.setMotorSpeed(motorSpeed);
 
         telemetry.addData("Heading", heading);
+        telemetry.addData("Motor Speed", motorSpeed);
     }
 }

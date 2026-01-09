@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -29,7 +28,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * This exercise is about experimentation - try adding 'final' in your code!
  */
 @TeleOp(name = "Chapter 19_2", group = "Exercises")
-@Disabled
 public class Chapter19_2 extends OpMode {
 
     // Example: final variable (constant)

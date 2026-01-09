@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -24,7 +23,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * - Flash LEDs during endgame for excitement
  */
 @TeleOp(name = "Chapter 22_1", group = "Exercises")
-@Disabled
 public class Chapter22_1 extends OpMode {
 
     // Example with REV Blinkin:

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -16,7 +15,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
  * 2. Display it in telemetry below
  */
 @TeleOp(name = "Chapter 10_1", group = "Exercises")
-@Disabled
 public class Chapter10_1 extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
 

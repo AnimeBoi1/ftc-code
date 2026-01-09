@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -14,7 +13,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
  * Hint: Use an if/else statement to choose what string to display
  */
 @TeleOp(name = "Chapter 6_2", group = "Exercises")
-@Disabled
 public class Chapter6_2 extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
 

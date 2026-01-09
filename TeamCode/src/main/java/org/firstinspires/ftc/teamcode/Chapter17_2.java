@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -38,7 +37,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * This exercise is a documentation task - modify TestMotor.java
  */
 @TeleOp(name = "Chapter 17_2", group = "Exercises")
-@Disabled
 public class Chapter17_2 extends OpMode {
 
     @Override

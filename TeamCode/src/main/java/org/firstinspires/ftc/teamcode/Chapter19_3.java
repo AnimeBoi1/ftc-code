@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -22,7 +21,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * String.format("%+.0f", 3.7) -> "+4" (rounded)
  */
 @TeleOp(name = "Chapter 19_3", group = "Exercises")
-@Disabled
 public class Chapter19_3 extends OpMode {
 
     /**

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -13,7 +12,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
  * than 10cm and go at half speed when farther than that.
  */
 @TeleOp(name = "Chapter 10_2", group = "Exercises")
-@Disabled
 public class Chapter10_2 extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
 

@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -23,7 +22,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
  * the robot toward the joystick angle.
  */
 @TeleOp(name = "Chapter 20_3", group = "Exercises")
-@Disabled
 public class Chapter20_3 extends OpMode {
     DcMotor frontLeft;
     DcMotor frontRight;

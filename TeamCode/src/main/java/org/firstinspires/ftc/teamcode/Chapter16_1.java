@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
@@ -21,7 +20,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
  * (where the Team Scoring Element is located) and moves the servo accordingly.
  */
 @Autonomous(name = "Chapter 16_1", group = "Exercises")
-@Disabled
 public class Chapter16_1 extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
 
