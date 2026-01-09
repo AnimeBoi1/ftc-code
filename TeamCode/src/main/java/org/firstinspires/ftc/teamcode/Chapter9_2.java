@@ -5,30 +5,23 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
 
-/**
- * Chapter 9 Exercise 2:
- * Make an OpMode that sets the servo to the position that the pot
- * is returning. Turn the pot and it will cause the servo to "follow" it.
- *
- * Prerequisites: Complete Exercise 9.1 first (getPotPosition method)
- */
 @TeleOp(name = "Chapter 9_2", group = "Exercises")
 public class Chapter9_2 extends OpMode {
-    ProgrammingBoard board = new ProgrammingBoard();
+    ProgrammingBoard board = new ProgrammingBoard(); // create programming board instance
 
     @Override
     public void init() {
-        board.init(hardwareMap);
-        telemetry.addData("Status", "Initialized");
+        board.init(hardwareMap); // initialize hardware
+        telemetry.addData("Status", "Initialized"); // show status
     }
 
     @Override
     public void loop() {
-        // TODO: Get pot position and set servo to that position
-        // double potPosition = board.getPotPosition();
-        // board.setServoPosition(potPosition);
+        double potVoltage = board.getPotVoltage(); // get pot voltage (0-3.3V typically)
+        double potPosition = potVoltage / 3.3; // convert to 0.0-1.0 range
+        board.setServoPosition(potPosition); // servo follows pot position
 
+        telemetry.addData("Pot Position", potPosition); // show normalized position
         telemetry.addData("Instructions", "Turn pot to move servo");
-        // telemetry.addData("Pot Position", potPosition);
     }
 }

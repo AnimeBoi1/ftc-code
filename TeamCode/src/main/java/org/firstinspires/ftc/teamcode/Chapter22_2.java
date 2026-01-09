@@ -5,95 +5,55 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
-/**
- * Chapter 22 Exercise 2:
- * For any of the three LED options, make them light up when a color sensor
- * sees a game element of your alliance color.
- *
- * This exercise does not have a solution in the appendix.
- *
- * This demonstrates using LEDs for driver feedback:
- * - LEDs light up when color sensor detects target color
- * - Helps drivers know when game element is in position
- *
- * This example uses REV Digital LED Indicator (simplest option)
- */
 @TeleOp(name = "Chapter 22_2", group = "Exercises")
 public class Chapter22_2 extends OpMode {
-    ColorSensor colorSensor;
-    DigitalChannel greenLed;
-    DigitalChannel redLed;
+    ColorSensor colorSensor; // detects colors
+    DigitalChannel greenLed, redLed; // LED indicators
 
-    // Color thresholds - adjust based on your game elements
-    final int RED_THRESHOLD = 150;
-    final int BLUE_THRESHOLD = 150;
-
-    // Set to true for red alliance, false for blue alliance
-    boolean isRedAlliance = true;
+    final int RED_THRESHOLD = 150; // red detection threshold
+    final int BLUE_THRESHOLD = 150; // blue detection threshold
+    boolean isRedAlliance = true; // true = red, false = blue
 
     @Override
     public void init() {
-        // Initialize color sensor
         colorSensor = hardwareMap.get(ColorSensor.class, "sensor_color_distance");
-
-        // Initialize LED indicator (REV Digital LED uses two digital channels)
         greenLed = hardwareMap.get(DigitalChannel.class, "green_led");
         redLed = hardwareMap.get(DigitalChannel.class, "red_led");
 
-        greenLed.setMode(DigitalChannel.Mode.OUTPUT);
+        greenLed.setMode(DigitalChannel.Mode.OUTPUT); // set as output
         redLed.setMode(DigitalChannel.Mode.OUTPUT);
 
         telemetry.addData("Status", "Initialized");
-        telemetry.addData("Alliance", isRedAlliance ? "RED" : "BLUE");
-        telemetry.addLine("Press X to toggle alliance color");
+        telemetry.addLine("Press X to toggle alliance");
     }
 
     @Override
     public void loop() {
-        // Toggle alliance with X button
-        if (gamepad1.x) {
+        if (gamepad1.x) { // toggle alliance color
             isRedAlliance = !isRedAlliance;
-            try {
-                Thread.sleep(200);  // Simple debounce
-            } catch (InterruptedException e) {
-                // Ignore
-            }
+            try { Thread.sleep(200); } catch (InterruptedException e) {} // debounce
         }
 
-        // Read color sensor values
-        int red = colorSensor.red();
-        int blue = colorSensor.blue();
+        int red = colorSensor.red(); // read red value
+        int blue = colorSensor.blue(); // read blue value
 
-        // Check if we see our alliance color
-        boolean seesAllianceColor;
-        if (isRedAlliance) {
-            seesAllianceColor = red > RED_THRESHOLD && red > blue;
-        } else {
-            seesAllianceColor = blue > BLUE_THRESHOLD && blue > red;
-        }
+        // check if alliance color detected
+        boolean detected = isRedAlliance ?
+                (red > RED_THRESHOLD && red > blue) :
+                (blue > BLUE_THRESHOLD && blue > red);
 
-        // Light up LED if we see alliance color
-        if (seesAllianceColor) {
-            if (isRedAlliance) {
-                redLed.setState(true);
-                greenLed.setState(false);
-            } else {
-                // Blue alliance - light green LED (or use different indicator)
-                redLed.setState(false);
-                greenLed.setState(true);
-            }
+        // light up LED when alliance color seen
+        if (detected) {
+            redLed.setState(isRedAlliance); // red LED for red alliance
+            greenLed.setState(!isRedAlliance); // green LED for blue alliance
         } else {
-            // No detection - turn off LEDs
-            redLed.setState(false);
+            redLed.setState(false); // turn off
             greenLed.setState(false);
         }
 
-        // Telemetry
         telemetry.addData("Alliance", isRedAlliance ? "RED" : "BLUE");
-        telemetry.addData("Color - Red", red);
-        telemetry.addData("Color - Blue", blue);
-        telemetry.addData("Detected", seesAllianceColor ? "YES!" : "No");
-        telemetry.addLine("");
-        telemetry.addLine("LED lights when alliance color detected");
+        telemetry.addData("Red", red);
+        telemetry.addData("Blue", blue);
+        telemetry.addData("Detected", detected ? "YES!" : "No");
     }
 }

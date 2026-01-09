@@ -3,16 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-/**
- * Chapter 13 Exercise 1:
- * Modify the opMode to send the chorus of a song you know at a fixed rate
- * on telemetry. Once it gets to the end, it should send it again (loop).
- *
- * This demonstrates using arrays and cycling through them.
- */
 @TeleOp(name = "Chapter 13_1", group = "Exercises")
 public class Chapter13_1 extends OpMode {
-    // Array of song lyrics (using "Twinkle Twinkle Little Star" as an example)
+    // array of song lyrics to display
     String[] lyrics = {
             "Twinkle, twinkle, little star,",
             "How I wonder what you are!",
@@ -22,30 +15,28 @@ public class Chapter13_1 extends OpMode {
             "How I wonder what you are!"
     };
 
-    int lineIndex = 0;
-    double DELAY_SECS = 1.0;
-    double nextTime = 0;
+    int lineIndex = 0; // current line index
+    double DELAY_SECS = 1.0; // seconds between lines
+    double nextTime = 0; // when to advance to next line
 
     @Override
     public void init() {
-        lineIndex = 0;
+        lineIndex = 0; // start at first line
         telemetry.addData("Status", "Initialized");
-        telemetry.addData("Song", "Ready to play lyrics");
     }
 
     @Override
     public void loop() {
-        // Check if it's time to advance to the next line
+        // check if it's time to advance to next line
         if (getRuntime() > nextTime) {
-            lineIndex++;
-            // Wrap around to the beginning when we reach the end
-            if (lineIndex >= lyrics.length) {
-                lineIndex = 0;
+            lineIndex++; // move to next line
+            if (lineIndex >= lyrics.length) { // if past end
+                lineIndex = 0; // wrap to beginning
             }
-            nextTime = getRuntime() + DELAY_SECS;
+            nextTime = getRuntime() + DELAY_SECS; // set next advance time
         }
 
-        telemetry.addData("Line", lineIndex + 1);
-        telemetry.addLine(lyrics[lineIndex]);
+        telemetry.addData("Line", lineIndex + 1); // show line number (1-based)
+        telemetry.addLine(lyrics[lineIndex]); // show current lyric
     }
 }

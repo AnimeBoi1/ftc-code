@@ -5,58 +5,50 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
 
-/**
- * Chapter 12 Exercise 1:
- * Make a program that ramps your motor to full speed (.25 for 250ms, .50
- * for 250ms, .75 for 250ms, 1.0) and goes at full speed until the touch
- * sensor is pressed.
- *
- * This demonstrates state machine programming with timed transitions.
- */
 @Autonomous(name = "Chapter 12_1", group = "Exercises")
 public class Chapter12_1 extends OpMode {
-    ProgrammingBoard board = new ProgrammingBoard();
+    ProgrammingBoard board = new ProgrammingBoard(); // create programming board instance
 
-    // State machine states
+    // state machine states for motor ramping
     enum State {
-        RAMP_25,
-        RAMP_50,
-        RAMP_75,
-        FULL_SPEED,
-        STOPPED
+        RAMP_25,      // 25% speed
+        RAMP_50,      // 50% speed
+        RAMP_75,      // 75% speed
+        FULL_SPEED,   // 100% speed
+        STOPPED       // motor stopped
     }
 
-    State currentState = State.RAMP_25;
-    double stateStartTime;
+    State currentState = State.RAMP_25; // start at 25% speed
+    double stateStartTime; // tracks when current state began
 
     @Override
     public void init() {
-        board.init(hardwareMap);
+        board.init(hardwareMap); // initialize hardware
         telemetry.addData("Status", "Initialized");
     }
 
     @Override
     public void start() {
-        stateStartTime = getRuntime();
-        currentState = State.RAMP_25;
-        board.setMotorSpeed(0.25);
+        stateStartTime = getRuntime(); // record start time
+        currentState = State.RAMP_25; // begin at first ramp state
+        board.setMotorSpeed(0.25); // set initial speed
     }
 
     @Override
     public void loop() {
-        double elapsedTime = getRuntime() - stateStartTime;
+        double elapsedTime = getRuntime() - stateStartTime; // time in current state
 
         switch (currentState) {
             case RAMP_25:
-                if (elapsedTime >= 0.250) {
-                    currentState = State.RAMP_50;
-                    board.setMotorSpeed(0.50);
-                    stateStartTime = getRuntime();
+                if (elapsedTime >= 0.250) { // after 250ms
+                    currentState = State.RAMP_50; // advance to next state
+                    board.setMotorSpeed(0.50); // increase speed
+                    stateStartTime = getRuntime(); // reset timer
                 }
                 break;
 
             case RAMP_50:
-                if (elapsedTime >= 0.250) {
+                if (elapsedTime >= 0.250) { // after 250ms
                     currentState = State.RAMP_75;
                     board.setMotorSpeed(0.75);
                     stateStartTime = getRuntime();
@@ -64,36 +56,24 @@ public class Chapter12_1 extends OpMode {
                 break;
 
             case RAMP_75:
-                if (elapsedTime >= 0.250) {
+                if (elapsedTime >= 0.250) { // after 250ms
                     currentState = State.FULL_SPEED;
-                    board.setMotorSpeed(1.0);
+                    board.setMotorSpeed(1.0); // full speed
                 }
                 break;
 
             case FULL_SPEED:
-                if (board.isTouchSensorPressed()) {
+                if (board.isTouchSensorPressed()) { // wait for touch sensor
                     currentState = State.STOPPED;
-                    board.setMotorSpeed(0);
+                    board.setMotorSpeed(0); // stop motor
                 }
                 break;
 
             case STOPPED:
-                // Motor is stopped, do nothing
-                break;
+                break; // do nothing, motor is stopped
         }
 
         telemetry.addData("State", currentState);
-        telemetry.addData("Motor Speed", getSpeedForState(currentState));
         telemetry.addData("Touch Sensor", board.isTouchSensorPressed() ? "Pressed" : "Released");
-    }
-
-    private double getSpeedForState(State state) {
-        switch (state) {
-            case RAMP_25: return 0.25;
-            case RAMP_50: return 0.50;
-            case RAMP_75: return 0.75;
-            case FULL_SPEED: return 1.0;
-            default: return 0.0;
-        }
     }
 }

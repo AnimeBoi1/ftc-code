@@ -5,41 +5,30 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
 
-/**
- * Chapter 15 Exercise 1:
- * Write a program that rumbles when the touch sensor is first pressed.
- * (Use one of the programming board files from earlier that has a touch sensor)
- *
- * This demonstrates gamepad rumble feedback based on sensor input.
- */
 @TeleOp(name = "Chapter 15_1", group = "Exercises")
 public class Chapter15_1 extends OpMode {
-    ProgrammingBoard board = new ProgrammingBoard();
-    boolean wasPressed = false;
+    ProgrammingBoard board = new ProgrammingBoard(); // create programming board instance
+    boolean wasPressed = false; // tracks previous touch sensor state
 
     @Override
     public void init() {
-        board.init(hardwareMap);
+        board.init(hardwareMap); // initialize hardware
         telemetry.addData("Status", "Initialized");
-        telemetry.addLine("Press the touch sensor to feel a rumble!");
+        telemetry.addLine("Press touch sensor to rumble!");
     }
 
     @Override
     public void loop() {
-        boolean isPressed = board.isTouchSensorPressed();
+        boolean isPressed = board.isTouchSensorPressed(); // get current state
 
-        // Rumble only when touch sensor is FIRST pressed (rising edge)
+        // rumble only on rising edge (first press)
         if (isPressed && !wasPressed) {
-            // Rumble gamepad1 for 500 milliseconds
-            gamepad1.rumble(500);
+            gamepad1.rumble(500); // rumble for 500ms
             telemetry.addLine("RUMBLE!");
         }
 
-        // Remember the previous state
-        wasPressed = isPressed;
+        wasPressed = isPressed; // remember state for next loop
 
-        // Display current state
         telemetry.addData("Touch Sensor", isPressed ? "PRESSED" : "Released");
-        telemetry.addLine("Press touch sensor to rumble controller");
     }
 }

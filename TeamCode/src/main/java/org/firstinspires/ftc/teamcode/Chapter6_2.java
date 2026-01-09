@@ -5,26 +5,23 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
 
-/**
- * Chapter 6 Exercise 2:
- * Have your OpMode send "Pressed" and "Not Pressed" for the touch sensor
- * instead of true or false.
- *
- * Hint: Use an if/else statement to choose what string to display
- */
 @TeleOp(name = "Chapter 6_2", group = "Exercises")
 public class Chapter6_2 extends OpMode {
-    ProgrammingBoard board = new ProgrammingBoard();
+    ProgrammingBoard board = new ProgrammingBoard(); // create programming board instance
 
     @Override
     public void init() {
-        board.init(hardwareMap);
-        telemetry.addData("Status", "Initialized");
+        board.init(hardwareMap); // initialize hardware
+        telemetry.addData("Status", "Initialized"); // show status
     }
 
     @Override
     public void loop() {
-        // TODO: Change this to display "Pressed" or "Not Pressed" instead of true/false
-        telemetry.addData("Touch Sensor", board.isTouchSensorPressed());
+        // display "Pressed" or "Not Pressed" instead of true/false
+        if (board.isTouchSensorPressed()) {
+            telemetry.addData("Touch Sensor", "Pressed");
+        } else {
+            telemetry.addData("Touch Sensor", "Not Pressed");
+        }
     }
 }

@@ -3,99 +3,45 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-/**
- * Chapter 23 Exercise 2:
- * Make a TeleOp that if it doesn't see any targets rumbles the gamepad.
- *
- * NOTE: No solution given in the book - this is a challenge exercise!
- *
- * This exercise combines:
- * 1. Limelight vision processing
- * 2. Gamepad rumble feedback
- *
- * The idea is to provide haptic feedback to the driver when no targets
- * are visible, helping them navigate to find game elements.
- *
- * Implementation hints:
- * - Use Limelight to detect targets
- * - If no targets detected for some time, rumble the gamepad
- * - Stop rumbling when targets are found
- * - Consider using rumble patterns (blips) rather than continuous rumble
- */
 @TeleOp(name = "Chapter 23_2", group = "Exercises")
 public class Chapter23_2 extends OpMode {
-
-    // TODO: Add Limelight
-    // private Limelight3A limelight;
-
-    boolean wasRumbling = false;
-    double lastTargetTime = 0;
-    final double NO_TARGET_THRESHOLD = 1.0;  // Seconds without target before rumbling
+    boolean wasRumbling = false; // track rumble state
+    double lastTargetTime = 0; // when target was last seen
+    final double NO_TARGET_THRESHOLD = 1.0; // seconds before rumbling
 
     @Override
     public void init() {
-        // TODO: Initialize Limelight
-        // limelight = hardwareMap.get(Limelight3A.class, "limelight");
-        // limelight.pipelineSwitch(0);  // Your detection pipeline
-        // limelight.start();
-
+        // rumble feedback when no vision targets detected
         telemetry.addData("Status", "Initialized");
         telemetry.addLine("Rumbles when no targets visible");
     }
 
     @Override
     public void loop() {
-        boolean targetVisible = false;
+        // simulate target detection with A button (replace with Limelight)
+        boolean targetVisible = gamepad1.a;
 
-        // TODO: Check for targets with Limelight
-        // LLResult result = limelight.getLatestResult();
-        // if (result != null && result.isValid()) {
-        //     // Check color results
-        //     List<LLResultTypes.ColorResult> colorResults = result.getColorResults();
-        //     if (!colorResults.isEmpty()) {
-        //         targetVisible = true;
-        //     }
-        //     // Or check AprilTag results
-        //     List<LLResultTypes.FiducialResult> fiducialResults = result.getFiducialResults();
-        //     if (!fiducialResults.isEmpty()) {
-        //         targetVisible = true;
-        //     }
-        // }
-
-        // For demo purposes without Limelight, use gamepad button
-        targetVisible = gamepad1.a;  // Simulate target detection with A button
-
-        // Update last target time
         if (targetVisible) {
-            lastTargetTime = getRuntime();
+            lastTargetTime = getRuntime(); // record when target seen
         }
 
-        // Check if we should rumble
-        double timeSinceTarget = getRuntime() - lastTargetTime;
-        boolean shouldRumble = timeSinceTarget > NO_TARGET_THRESHOLD;
+        double timeSinceTarget = getRuntime() - lastTargetTime; // how long since target
+        boolean shouldRumble = timeSinceTarget > NO_TARGET_THRESHOLD; // rumble if no target
 
-        // Apply rumble feedback
+        // apply rumble feedback
         if (shouldRumble && !wasRumbling) {
-            // Start rumbling - use blips pattern
-            gamepad1.rumbleBlips(2);
+            gamepad1.rumbleBlips(2); // start rumble pattern
             wasRumbling = true;
         } else if (!shouldRumble && wasRumbling) {
-            // Stop rumbling
-            gamepad1.stopRumble();
+            gamepad1.stopRumble(); // stop rumble
             wasRumbling = false;
-        } else if (shouldRumble) {
-            // Continue rumble pattern
-            if (!gamepad1.isRumbling()) {
-                gamepad1.rumbleBlips(2);
-            }
+        } else if (shouldRumble && !gamepad1.isRumbling()) {
+            gamepad1.rumbleBlips(2); // continue pattern
         }
 
-        // Telemetry
-        telemetry.addData("Target Visible", targetVisible ? "YES" : "No");
-        telemetry.addData("Time Since Target", "%.1f s", timeSinceTarget);
+        telemetry.addData("Target", targetVisible ? "YES" : "No");
+        telemetry.addData("Time Since", "%.1f s", timeSinceTarget);
         telemetry.addData("Rumbling", shouldRumble ? "YES" : "No");
-        telemetry.addLine("");
-        telemetry.addLine("Hold A to simulate target detection");
-        telemetry.addLine("Release A to trigger rumble after 1 sec");
+        telemetry.addLine("Hold A to simulate target");
     }
 }

@@ -6,71 +6,56 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
 
-/**
- * Chapter 12 Exercise 2:
- * Make a program that turns the motor until the distance sensor is less
- * than 10cm OR 5 seconds has passed and then turns the servo.
- *
- * This demonstrates combining time-based and sensor-based state transitions.
- */
 @Autonomous(name = "Chapter 12_2", group = "Exercises")
 public class Chapter12_2 extends OpMode {
-    ProgrammingBoard board = new ProgrammingBoard();
+    ProgrammingBoard board = new ProgrammingBoard(); // create programming board instance
 
+    // state machine states
     enum State {
-        MOTOR_RUNNING,
-        SERVO_MOVING,
-        DONE
+        MOTOR_RUNNING, // motor is running
+        SERVO_MOVING,  // servo is moving
+        DONE           // program complete
     }
 
-    State currentState = State.MOTOR_RUNNING;
-    double startTime;
-    final double TIMEOUT_SECONDS = 5.0;
-    final double DISTANCE_THRESHOLD_CM = 10.0;
-    final double SERVO_POSITION = 0.5;
+    State currentState = State.MOTOR_RUNNING; // initial state
+    double startTime; // tracks when motor started
+    final double TIMEOUT_SECONDS = 5.0; // max time to run motor
+    final double DISTANCE_THRESHOLD_CM = 10.0; // distance to stop at
 
     @Override
     public void init() {
-        board.init(hardwareMap);
+        board.init(hardwareMap); // initialize hardware
         telemetry.addData("Status", "Initialized");
     }
 
     @Override
     public void start() {
-        startTime = getRuntime();
+        startTime = getRuntime(); // record start time
         currentState = State.MOTOR_RUNNING;
-        board.setMotorSpeed(0.5);
+        board.setMotorSpeed(0.5); // start motor at half speed
     }
 
     @Override
     public void loop() {
-        double elapsedTime = getRuntime() - startTime;
-        double distance = board.getDistance(DistanceUnit.CM);
+        double elapsedTime = getRuntime() - startTime; // time since start
+        double distance = board.getDistance(DistanceUnit.CM); // get distance reading
 
         switch (currentState) {
             case MOTOR_RUNNING:
-                // Check if distance is less than 10cm OR 5 seconds have passed
+                // stop if distance < 10cm OR timeout reached
                 if (distance < DISTANCE_THRESHOLD_CM || elapsedTime >= TIMEOUT_SECONDS) {
-                    // Stop motor and move servo
-                    board.setMotorSpeed(0);
-                    board.setServoPosition(SERVO_POSITION);
+                    board.setMotorSpeed(0); // stop motor
+                    board.setServoPosition(0.5); // move servo
                     currentState = State.SERVO_MOVING;
-
-                    if (distance < DISTANCE_THRESHOLD_CM) {
-                        telemetry.addData("Trigger", "Distance threshold reached");
-                    } else {
-                        telemetry.addData("Trigger", "Timeout reached");
-                    }
                 }
                 break;
 
             case SERVO_MOVING:
-                currentState = State.DONE;
+                currentState = State.DONE; // transition to done
                 break;
 
             case DONE:
-                // Program complete
-                break;
+                break; // program complete
         }
 
         telemetry.addData("State", currentState);

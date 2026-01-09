@@ -3,50 +3,34 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-/**
- * Chapter 18 Exercise 1:
- * Write an OpMode that uses the telemetry.speak() method.
- *
- * The speak() method allows you to have the Driver Station speak text aloud.
- * This can be useful for:
- * - Announcing game state changes
- * - Alerting drivers to important events
- * - Accessibility features
- *
- * Note: The Driver Station must have text-to-speech enabled.
- */
 @TeleOp(name = "Chapter 18_1", group = "Exercises")
 public class Chapter18_1 extends OpMode {
-    boolean hasSpoken = false;
-    boolean wasA = false;
-    int count = 0;
+    boolean hasSpoken = false; // track if 5-second message played
+    boolean wasA = false; // previous A button state
+    int count = 0; // button press counter
 
     @Override
     public void init() {
         telemetry.addData("Status", "Initialized");
-        telemetry.addLine("Press A to hear the robot speak!");
-
-        // Speak during init
-        telemetry.speak("Ready to go!");
+        telemetry.speak("Ready to go!"); // speak during init
     }
 
     @Override
     public void start() {
-        // Speak when the OpMode starts
-        telemetry.speak("OpMode started!");
-        hasSpoken = false;
+        telemetry.speak("OpMode started!"); // speak when started
+        hasSpoken = false; // reset flag
     }
 
     @Override
     public void loop() {
-        // Speak when A button is pressed (rising edge)
+        // speak on A button press (rising edge)
         if (gamepad1.a && !wasA) {
-            count++;
+            count++; // increment counter
             telemetry.speak("Button pressed " + count + " times");
         }
-        wasA = gamepad1.a;
+        wasA = gamepad1.a; // remember button state
 
-        // Speak once after 5 seconds
+        // speak once after 5 seconds
         if (getRuntime() > 5.0 && !hasSpoken) {
             telemetry.speak("Five seconds have passed");
             hasSpoken = true;
@@ -54,6 +38,5 @@ public class Chapter18_1 extends OpMode {
 
         telemetry.addData("Count", count);
         telemetry.addData("Runtime", "%.1f", getRuntime());
-        telemetry.addLine("Press A to speak");
     }
 }

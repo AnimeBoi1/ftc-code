@@ -6,29 +6,27 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
 
-/**
- * Chapter 10 Exercise 2:
- * Make the motor stop when the distance sensor sees something closer
- * than 10cm and go at half speed when farther than that.
- */
 @TeleOp(name = "Chapter 10_2", group = "Exercises")
 public class Chapter10_2 extends OpMode {
-    ProgrammingBoard board = new ProgrammingBoard();
+    ProgrammingBoard board = new ProgrammingBoard(); // create programming board instance
 
     @Override
     public void init() {
-        board.init(hardwareMap);
-        telemetry.addData("Status", "Initialized");
+        board.init(hardwareMap); // initialize hardware
+        telemetry.addData("Status", "Initialized"); // show status
     }
 
     @Override
     public void loop() {
-        double distance = board.getDistance(DistanceUnit.CM);
+        double distance = board.getDistance(DistanceUnit.CM); // get distance in centimeters
 
-        // TODO: Implement the logic:
-        // if distance < 10cm: stop motor (speed = 0)
-        // else: half speed (speed = 0.5)
+        // stop motor if object closer than 10cm, otherwise half speed
+        if (distance < 10.0) {
+            board.setMotorSpeed(0.0); // stop motor
+        } else {
+            board.setMotorSpeed(0.5); // run at half speed
+        }
 
-        telemetry.addData("Distance (cm)", distance);
+        telemetry.addData("Distance (cm)", distance); // show distance reading
     }
 }

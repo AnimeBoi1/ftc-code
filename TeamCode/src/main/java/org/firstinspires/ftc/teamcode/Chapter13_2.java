@@ -5,24 +5,17 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import java.util.ArrayList;
 
-/**
- * Chapter 13 Exercise 2:
- * Modify your solution for exercise 1 to use ArrayList<String> instead of arrays.
- *
- * This demonstrates using ArrayList which can grow dynamically.
- */
 @TeleOp(name = "Chapter 13_2", group = "Exercises")
 public class Chapter13_2 extends OpMode {
-    // ArrayList of song lyrics
-    ArrayList<String> lyrics = new ArrayList<>();
+    ArrayList<String> lyrics = new ArrayList<>(); // dynamic list of lyrics
 
-    int lineIndex = 0;
-    double DELAY_SECS = 1.0;
-    double nextTime = 0;
+    int lineIndex = 0; // current line index
+    double DELAY_SECS = 1.0; // seconds between lines
+    double nextTime = 0; // when to advance to next line
 
     @Override
     public void init() {
-        // Add lyrics to the ArrayList
+        // add lyrics to ArrayList (can grow dynamically unlike arrays)
         lyrics.add("Twinkle, twinkle, little star,");
         lyrics.add("How I wonder what you are!");
         lyrics.add("Up above the world so high,");
@@ -30,24 +23,23 @@ public class Chapter13_2 extends OpMode {
         lyrics.add("Twinkle, twinkle, little star,");
         lyrics.add("How I wonder what you are!");
 
-        lineIndex = 0;
+        lineIndex = 0; // start at first line
         telemetry.addData("Status", "Initialized");
-        telemetry.addData("Song Lines", lyrics.size());
+        telemetry.addData("Song Lines", lyrics.size()); // show total lines
     }
 
     @Override
     public void loop() {
-        // Check if it's time to advance to the next line
+        // check if it's time to advance to next line
         if (getRuntime() > nextTime) {
-            lineIndex++;
-            // Wrap around to the beginning when we reach the end
-            if (lineIndex >= lyrics.size()) {
-                lineIndex = 0;
+            lineIndex++; // move to next line
+            if (lineIndex >= lyrics.size()) { // if past end
+                lineIndex = 0; // wrap to beginning
             }
-            nextTime = getRuntime() + DELAY_SECS;
+            nextTime = getRuntime() + DELAY_SECS; // set next advance time
         }
 
-        telemetry.addData("Line", lineIndex + 1);
-        telemetry.addLine(lyrics.get(lineIndex));
+        telemetry.addData("Line", lineIndex + 1); // show line number
+        telemetry.addLine(lyrics.get(lineIndex)); // get lyric from ArrayList
     }
 }
