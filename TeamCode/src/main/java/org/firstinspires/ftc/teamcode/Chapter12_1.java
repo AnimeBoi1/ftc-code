@@ -1,77 +1,77 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode; // declares which package this class belongs to
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous; // imports the Autonomous annotation for autonomous mode
+import com.qualcomm.robotcore.eventloop.opmode.OpMode; // imports the OpMode base class for iterative programs
 
-import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
+import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard; // imports the ProgrammingBoard helper class
 
-@Autonomous()
-public class Chapter12_1 extends OpMode {
-    enum State {
-        START,
-        QUARTER_SPEED,
-        HALF_SPEED,
-        THREE_QUARTERS_SPEED,
-        FULL_SPEED,
-        DONE
+@Autonomous() // marks this class as an Autonomous program (runs without driver control)
+public class Chapter12_1 extends OpMode { // defines our class extending OpMode for iterative execution
+    enum State { // defines the possible states for our state machine
+        START, // initial state when autonomous begins
+        QUARTER_SPEED, // motor running at 25% speed
+        HALF_SPEED, // motor running at 50% speed
+        THREE_QUARTERS_SPEED, // motor running at 75% speed
+        FULL_SPEED, // motor running at 100% speed
+        DONE // autonomous sequence completed
     }
 
-    ProgrammingBoard board = new ProgrammingBoard();
-    State state = State.START;
-    double lastStepTime;
+    ProgrammingBoard board = new ProgrammingBoard(); // creates an instance of the ProgrammingBoard hardware abstraction
+    State state = State.START; // initializes state machine to START state
+    double lastStepTime; // stores the timestamp of the last state transition
 
-    @Override
-    public void init() {
-        board.init(hardwareMap);
+    @Override // indicates we're overriding a method from the parent class
+    public void init() { // called once when INIT is pressed on Driver Station
+        board.init(hardwareMap); // initializes all hardware devices using the robot's hardware map
     }
 
-    @Override
-    public void start() {
-        state = State.START;
+    @Override // indicates we're overriding a method from the parent class
+    public void start() { // called once when START is pressed on Driver Station
+        state = State.START; // resets state machine to START state
     }
 
-    @Override
-    public void loop() {
-        telemetry.addData("State", state);
-        switch (state) {
-            case START:
-                board.setMotorSpeed(0.250);
-                state = State.QUARTER_SPEED;
-                lastStepTime = getRuntime();
-                break;
+    @Override // indicates we're overriding a method from the parent class
+    public void loop() { // called repeatedly while the OpMode is running
+        telemetry.addData("State", state); // displays the current state on Driver Station
+        switch (state) { // executes code based on current state
+            case START: // when in START state
+                board.setMotorSpeed(0.250); // sets motor to 25% speed
+                state = State.QUARTER_SPEED; // transitions to QUARTER_SPEED state
+                lastStepTime = getRuntime(); // records the current time
+                break; // exits the switch statement
 
-            case QUARTER_SPEED:
-                if (getRuntime() > lastStepTime + .250) {
-                    board.setMotorSpeed(0.500);
-                    state = State.HALF_SPEED;
-                    lastStepTime = getRuntime();
+            case QUARTER_SPEED: // when in QUARTER_SPEED state
+                if (getRuntime() > lastStepTime + .250) { // checks if 0.25 seconds have passed
+                    board.setMotorSpeed(0.500); // increases motor to 50% speed
+                    state = State.HALF_SPEED; // transitions to HALF_SPEED state
+                    lastStepTime = getRuntime(); // records the current time
                 }
-                break;
+                break; // exits the switch statement
 
-            case HALF_SPEED:
-                if (getRuntime() > lastStepTime + .250) {
-                    board.setMotorSpeed(0.750);
-                    state = State.THREE_QUARTERS_SPEED;
-                    lastStepTime = getRuntime();
+            case HALF_SPEED: // when in HALF_SPEED state
+                if (getRuntime() > lastStepTime + .250) { // checks if 0.25 seconds have passed
+                    board.setMotorSpeed(0.750); // increases motor to 75% speed
+                    state = State.THREE_QUARTERS_SPEED; // transitions to THREE_QUARTERS_SPEED state
+                    lastStepTime = getRuntime(); // records the current time
                 }
-                break;
+                break; // exits the switch statement
 
-            case THREE_QUARTERS_SPEED:
-                if (getRuntime() > lastStepTime + .250) {
-                    board.setMotorSpeed(1.00);
-                    state = State.FULL_SPEED;
+            case THREE_QUARTERS_SPEED: // when in THREE_QUARTERS_SPEED state
+                if (getRuntime() > lastStepTime + .250) { // checks if 0.25 seconds have passed
+                    board.setMotorSpeed(1.00); // increases motor to full speed
+                    state = State.FULL_SPEED; // transitions to FULL_SPEED state
                 }
-                break;
+                break; // exits the switch statement
 
-            case FULL_SPEED:
-                if (board.isTouchSensorPressed()) {
-                    board.setMotorSpeed(0.0);
-                    state = State.DONE;
+            case FULL_SPEED: // when in FULL_SPEED state
+                if (board.isTouchSensorPressed()) { // checks if touch sensor is pressed
+                    board.setMotorSpeed(0.0); // stops the motor
+                    state = State.DONE; // transitions to DONE state
                 }
-                break;
+                break; // exits the switch statement
 
-            default:
-                telemetry.addData("Auto", "Finished");
+            default: // handles DONE state and any undefined states
+                telemetry.addData("Auto", "Finished"); // displays completion message
         }
     }
 }

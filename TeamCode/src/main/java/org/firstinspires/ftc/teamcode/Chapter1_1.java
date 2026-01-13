@@ -1,17 +1,17 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode; // declares which package this class belongs to
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode; // imports the OpMode base class for iterative programs
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp; // imports the TeleOp annotation for driver-controlled mode
 
-@TeleOp
-public class Chapter1_1 extends OpMode {
+@TeleOp // marks this class as a TeleOp program visible on the Driver Station
+public class Chapter1_1 extends OpMode { // defines our class extending OpMode for iterative execution
 
-    @Override
-    public void init() {
-        telemetry.addData("Hello", "Mayank");
+    @Override // indicates we're overriding a method from the parent class
+    public void init() { // called once when INIT is pressed on Driver Station
+        telemetry.addData("Hello", "Mayank"); // displays "Hello: Mayank" on the Driver Station screen
     }
 
-    @Override
-    public void loop() {
+    @Override // indicates we're overriding a method from the parent class
+    public void loop() { // called repeatedly while the OpMode is running (empty here)
     }
 }
