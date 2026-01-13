@@ -3,13 +3,11 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "Chapter 4_1")
+@TeleOp
 public class Chapter4_1 extends OpMode {
 
     @Override
     public void init() {
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
     }
 
     @Override
@@ -19,8 +17,6 @@ public class Chapter4_1 extends OpMode {
         if (!gamepad1.a) {
             fwdSpeed *= 0.5;
         }
-
         telemetry.addData("Forward Speed", fwdSpeed);
-        telemetry.update();
     }
 }

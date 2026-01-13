@@ -2,27 +2,28 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
 
-@TeleOp(name = "Chapter 11_2", group = "Exercises")
+@TeleOp()
 public class Chapter11_2 extends OpMode {
-    ProgrammingBoard board = new ProgrammingBoard(); // create programming board instance
+    ProgrammingBoard board = new ProgrammingBoard();
 
     @Override
     public void init() {
-        board.init(hardwareMap); // initialize hardware
-        telemetry.addData("Status", "Initialized"); // show status
+        board.init(hardwareMap);
     }
 
     @Override
     public void loop() {
-        double heading = board.getHeading(AngleUnit.DEGREES); // get heading (-180 to 180)
-        double motorSpeed = heading / 180.0; // scale to motor range (-1.0 to 1.0)
-        board.setMotorSpeed(motorSpeed); // motor speed follows heading
+        double headingDegrees = board.getHeading(AngleUnit.DEGREES);
+        double motorSpeed = Range.scale(headingDegrees, -180, 180, -1.0, 1.0);
 
-        telemetry.addData("Heading", heading); // show current heading
-        telemetry.addData("Motor Speed", motorSpeed); // show motor speed
+        telemetry.addData("Our Heading (DEG)", headingDegrees);
+        telemetry.addData("Motor Speed", motorSpeed);
+
+        board.setMotorSpeed(motorSpeed);
     }
 }

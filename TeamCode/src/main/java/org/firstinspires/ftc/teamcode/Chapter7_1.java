@@ -6,32 +6,27 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
 
-@TeleOp(name = "Chapter 7_1", group = "Exercises")
+@TeleOp()
 public class Chapter7_1 extends OpMode {
-    ProgrammingBoard board = new ProgrammingBoard(); // create programming board instance
-    String currentMode = "BRAKE"; // track current zero power behavior
+    ProgrammingBoard board = new ProgrammingBoard();
 
     @Override
     public void init() {
-        board.init(hardwareMap); // initialize hardware
-        telemetry.addData("Status", "Initialized"); // show status
+        board.init(hardwareMap);
     }
 
     @Override
     public void loop() {
-        board.setMotorSpeed(gamepad1.left_stick_y); // control motor with left stick
+        double motorSpeed = gamepad1.left_stick_y;
 
-        // change zero power behavior based on button press
+        board.setMotorSpeed(motorSpeed);
+        telemetry.addData("speed", motorSpeed);
         if (gamepad1.a) {
-            currentMode = "BRAKE"; // motor brakes when power is zero
+            board.setMotorZeroBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            telemetry.addData("Zero", "Brake");
+        } else if (gamepad1.b) {
+            board.setMotorZeroBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            telemetry.addData("Zero", "Float");
         }
-        if (gamepad1.b) {
-            currentMode = "FLOAT"; // motor coasts when power is zero
-        }
-
-        telemetry.addData("Motor Rotations", board.getMotorRotations()); // show encoder count
-        telemetry.addData("Current Mode", currentMode); // show current mode
-        telemetry.addData("Press A", "for BRAKE mode");
-        telemetry.addData("Press B", "for FLOAT mode");
     }
 }

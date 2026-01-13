@@ -6,27 +6,24 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
 
-@TeleOp(name = "Chapter 10_2", group = "Exercises")
+@TeleOp()
 public class Chapter10_2 extends OpMode {
-    ProgrammingBoard board = new ProgrammingBoard(); // create programming board instance
+    ProgrammingBoard board = new ProgrammingBoard();
 
     @Override
     public void init() {
-        board.init(hardwareMap); // initialize hardware
-        telemetry.addData("Status", "Initialized"); // show status
+        board.init(hardwareMap);
     }
 
     @Override
     public void loop() {
-        double distance = board.getDistance(DistanceUnit.CM); // get distance in centimeters
+        double distanceCM = board.getDistance(DistanceUnit.CM);
 
-        // stop motor if object closer than 10cm, otherwise half speed
-        if (distance < 10.0) {
-            board.setMotorSpeed(0.0); // stop motor
+        if (distanceCM < 10.0) {
+            board.setMotorSpeed(0.0);
         } else {
-            board.setMotorSpeed(0.5); // run at half speed
+            board.setMotorSpeed(0.5);
         }
-
-        telemetry.addData("Distance (cm)", distance); // show distance reading
+        telemetry.addData("Distance (CM)", distanceCM);
     }
 }

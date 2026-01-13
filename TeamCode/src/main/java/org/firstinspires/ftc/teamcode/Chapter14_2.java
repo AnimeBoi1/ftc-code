@@ -8,22 +8,20 @@ import org.firstinspires.ftc.teamcode.mechanisms.TestItem;
 
 import java.util.ArrayList;
 
-@TeleOp(name = "Chapter 14_2", group = "Exercises")
+@TeleOp()
 public class Chapter14_2 extends OpMode {
-    ProgrammingBoard board = new ProgrammingBoard(); // create programming board instance
-    ArrayList<TestItem> tests = new ArrayList<>(); // list of test items
-    boolean wasDown, wasUp; // track previous button states
-    int testNum; // current test index
+    ProgrammingBoard board = new ProgrammingBoard();
+    ArrayList<TestItem> tests = new ArrayList<>();
+    boolean wasDown, wasUp;
+    int testNum;
 
     @Override
     public void init() {
-        board.init(hardwareMap); // initialize hardware
-        telemetry.addData("Status", "Initialized");
+        board.init(hardwareMap);
     }
 
     @Override
     public void loop() {
-        // move up in test list (with edge detection)
         if (gamepad1.dpad_up && !wasUp) {
             testNum--;
             if (testNum < 0) {
@@ -32,7 +30,6 @@ public class Chapter14_2 extends OpMode {
         }
         wasUp = gamepad1.dpad_up;
 
-        // move down in test list (with edge detection)
         if (gamepad1.dpad_down && !wasDown) {
             testNum++;
             if (testNum >= tests.size()) {
@@ -41,15 +38,10 @@ public class Chapter14_2 extends OpMode {
         }
         wasDown = gamepad1.dpad_down;
 
-        telemetry.addLine("D-pad up/down to select test");
-        telemetry.addLine("Press A to run test");
-
         if (tests.size() > 0) {
-            TestItem currTest = tests.get(testNum); // get current test
+            TestItem currTest = tests.get(testNum);
             telemetry.addData("Test", currTest.getDescription());
-            currTest.run(gamepad1.a, telemetry); // run if A pressed
-        } else {
-            telemetry.addLine("No tests available");
+            currTest.run(gamepad1.a, telemetry);
         }
     }
 }

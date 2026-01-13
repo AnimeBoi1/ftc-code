@@ -5,75 +5,73 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
 
-@Autonomous(name = "Chapter 12_1", group = "Exercises")
+@Autonomous()
 public class Chapter12_1 extends OpMode {
-    ProgrammingBoard board = new ProgrammingBoard(); // create programming board instance
-
-    // state machine states for motor ramping
     enum State {
-        RAMP_25,      // 25% speed
-        RAMP_50,      // 50% speed
-        RAMP_75,      // 75% speed
-        FULL_SPEED,   // 100% speed
-        STOPPED       // motor stopped
+        START,
+        QUARTER_SPEED,
+        HALF_SPEED,
+        THREE_QUARTERS_SPEED,
+        FULL_SPEED,
+        DONE
     }
 
-    State currentState = State.RAMP_25; // start at 25% speed
-    double stateStartTime; // tracks when current state began
+    ProgrammingBoard board = new ProgrammingBoard();
+    State state = State.START;
+    double lastStepTime;
 
     @Override
     public void init() {
-        board.init(hardwareMap); // initialize hardware
-        telemetry.addData("Status", "Initialized");
+        board.init(hardwareMap);
     }
 
     @Override
     public void start() {
-        stateStartTime = getRuntime(); // record start time
-        currentState = State.RAMP_25; // begin at first ramp state
-        board.setMotorSpeed(0.25); // set initial speed
+        state = State.START;
     }
 
     @Override
     public void loop() {
-        double elapsedTime = getRuntime() - stateStartTime; // time in current state
+        telemetry.addData("State", state);
+        switch (state) {
+            case START:
+                board.setMotorSpeed(0.250);
+                state = State.QUARTER_SPEED;
+                lastStepTime = getRuntime();
+                break;
 
-        switch (currentState) {
-            case RAMP_25:
-                if (elapsedTime >= 0.250) { // after 250ms
-                    currentState = State.RAMP_50; // advance to next state
-                    board.setMotorSpeed(0.50); // increase speed
-                    stateStartTime = getRuntime(); // reset timer
+            case QUARTER_SPEED:
+                if (getRuntime() > lastStepTime + .250) {
+                    board.setMotorSpeed(0.500);
+                    state = State.HALF_SPEED;
+                    lastStepTime = getRuntime();
                 }
                 break;
 
-            case RAMP_50:
-                if (elapsedTime >= 0.250) { // after 250ms
-                    currentState = State.RAMP_75;
-                    board.setMotorSpeed(0.75);
-                    stateStartTime = getRuntime();
+            case HALF_SPEED:
+                if (getRuntime() > lastStepTime + .250) {
+                    board.setMotorSpeed(0.750);
+                    state = State.THREE_QUARTERS_SPEED;
+                    lastStepTime = getRuntime();
                 }
                 break;
 
-            case RAMP_75:
-                if (elapsedTime >= 0.250) { // after 250ms
-                    currentState = State.FULL_SPEED;
-                    board.setMotorSpeed(1.0); // full speed
+            case THREE_QUARTERS_SPEED:
+                if (getRuntime() > lastStepTime + .250) {
+                    board.setMotorSpeed(1.00);
+                    state = State.FULL_SPEED;
                 }
                 break;
 
             case FULL_SPEED:
-                if (board.isTouchSensorPressed()) { // wait for touch sensor
-                    currentState = State.STOPPED;
-                    board.setMotorSpeed(0); // stop motor
+                if (board.isTouchSensorPressed()) {
+                    board.setMotorSpeed(0.0);
+                    state = State.DONE;
                 }
                 break;
 
-            case STOPPED:
-                break; // do nothing, motor is stopped
+            default:
+                telemetry.addData("Auto", "Finished");
         }
-
-        telemetry.addData("State", currentState);
-        telemetry.addData("Touch Sensor", board.isTouchSensorPressed() ? "Pressed" : "Released");
     }
 }

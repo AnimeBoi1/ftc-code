@@ -8,12 +8,12 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@TeleOp(name = "Chapter 20_3", group = "Exercises")
+@TeleOp()
 public class Chapter20_3 extends OpMode {
-    DcMotor frontLeft, frontRight, backLeft, backRight; // mecanum motors
-    IMU imu; // gyro sensor
-    final double ROTATION_P = 0.02; // proportional gain
-    final double DEADZONE = 0.3; // joystick deadzone
+    DcMotor frontLeft, frontRight, backLeft, backRight;
+    IMU imu;
+    final double ROTATION_P = 0.02;
+    final double DEADZONE = 0.3;
 
     @Override
     public void init() {
@@ -22,49 +22,41 @@ public class Chapter20_3 extends OpMode {
         backLeft = hardwareMap.get(DcMotor.class, "back_left");
         backRight = hardwareMap.get(DcMotor.class, "back_right");
 
-        frontRight.setDirection(DcMotor.Direction.REVERSE); // reverse right
+        frontRight.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.REVERSE);
 
-        // initialize IMU
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD)));
-
-        telemetry.addData("Status", "Initialized");
-        telemetry.addLine("Right stick snaps to angle");
     }
 
     @Override
     public void loop() {
-        double y = -gamepad1.left_stick_y; // forward/back
-        double x = gamepad1.left_stick_x; // strafe
+        double y = -gamepad1.left_stick_y;
+        double x = gamepad1.left_stick_x;
         double rightX = gamepad1.right_stick_x;
         double rightY = -gamepad1.right_stick_y;
-        double rightMag = Math.hypot(rightX, rightY); // joystick magnitude
+        double rightMag = Math.hypot(rightX, rightY);
 
-        double rx = 0; // rotation power
+        double rx = 0;
 
-        // snap to angle if right stick pushed past deadzone
         if (rightMag > DEADZONE) {
-            double targetAngle = Math.toDegrees(Math.atan2(rightX, rightY)); // target from joystick
+            double targetAngle = Math.toDegrees(Math.atan2(rightX, rightY));
             double currentAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-            double error = targetAngle - currentAngle; // angle difference
+            double error = targetAngle - currentAngle;
 
-            // normalize to [-180, 180]
             while (error > 180) error -= 360;
             while (error < -180) error += 360;
 
-            rx = Math.max(-1, Math.min(1, error * ROTATION_P)); // P control
+            rx = Math.max(-1, Math.min(1, error * ROTATION_P));
             telemetry.addData("Target", "%.1f", targetAngle);
             telemetry.addData("Error", "%.1f", error);
         }
 
-        // mecanum formula
         double fl = y + x + rx, fr = y - x - rx;
         double bl = y - x + rx, br = y + x - rx;
 
-        // normalize
         double max = Math.max(Math.abs(fl), Math.max(Math.abs(fr),
                 Math.max(Math.abs(bl), Math.abs(br))));
         if (max > 1.0) { fl /= max; fr /= max; bl /= max; br /= max; }

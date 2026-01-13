@@ -3,40 +3,37 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "Chapter 13_1", group = "Exercises")
+@TeleOp()
 public class Chapter13_1 extends OpMode {
-    // array of song lyrics to display
-    String[] lyrics = {
-            "Twinkle, twinkle, little star,",
-            "How I wonder what you are!",
-            "Up above the world so high,",
-            "Like a diamond in the sky.",
-            "Twinkle, twinkle, little star,",
-            "How I wonder what you are!"
-    };
+    String[] lines = {
+            "Then he waddled away",
+            "(Waddle waddle)",
+            "Then he waddled away",
+            "(Waddle waddle waddle)",
+            "Then he waddled away",
+            "(Waddle waddle)",
+            "'Til the very next day",
+            "(Bum bum bum bum bum ba-dum)"};
 
-    int lineIndex = 0; // current line index
-    double DELAY_SECS = 1.0; // seconds between lines
-    double nextTime = 0; // when to advance to next line
+    int lineIndex;
+    double DELAY_SECS = 0.5;
+
+    double nextTime;
 
     @Override
     public void init() {
-        lineIndex = 0; // start at first line
-        telemetry.addData("Status", "Initialized");
+        lineIndex = 0;
     }
 
     @Override
     public void loop() {
-        // check if it's time to advance to next line
-        if (getRuntime() > nextTime) {
-            lineIndex++; // move to next line
-            if (lineIndex >= lyrics.length) { // if past end
-                lineIndex = 0; // wrap to beginning
+        if (nextTime < getRuntime()) {
+            lineIndex++;
+            if (lineIndex >= lines.length) {
+                lineIndex = lines.length - 1;
             }
-            nextTime = getRuntime() + DELAY_SECS; // set next advance time
+            nextTime = getRuntime() + DELAY_SECS;
         }
-
-        telemetry.addData("Line", lineIndex + 1); // show line number (1-based)
-        telemetry.addLine(lyrics[lineIndex]); // show current lyric
+        telemetry.addLine(lines[lineIndex]);
     }
 }

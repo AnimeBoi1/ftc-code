@@ -5,23 +5,21 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
 
-@TeleOp(name = "Chapter 6_2", group = "Exercises")
+@TeleOp()
 public class Chapter6_2 extends OpMode {
-    ProgrammingBoard board = new ProgrammingBoard(); // create programming board instance
+    ProgrammingBoard board = new ProgrammingBoard();
 
     @Override
     public void init() {
-        board.init(hardwareMap); // initialize hardware
-        telemetry.addData("Status", "Initialized"); // show status
+        board.init(hardwareMap);
     }
 
     @Override
     public void loop() {
-        // display "Pressed" or "Not Pressed" instead of true/false
+        String touchSensorString = "Not Pressed";
         if (board.isTouchSensorPressed()) {
-            telemetry.addData("Touch Sensor", "Pressed");
-        } else {
-            telemetry.addData("Touch Sensor", "Not Pressed");
+            touchSensorString = "Pressed";
         }
+        telemetry.addData("Touch sensor", touchSensorString);
     }
 }

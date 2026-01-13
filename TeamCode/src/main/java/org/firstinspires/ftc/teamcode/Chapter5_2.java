@@ -1,59 +1,51 @@
-// File: `TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Chapter5_2.java`
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "Chapter 5_2")
+@TeleOp
 public class Chapter5_2 extends OpMode {
-    private RobotLocation_5_2 location;
+    RobotLocation_5_2 robotLocation = new RobotLocation_5_2(0);
 
     @Override
     public void init() {
-        location = new RobotLocation_5_2(0.0, 0.0);
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
+        robotLocation.setAngle(0);
     }
 
     @Override
     public void loop() {
-        // Turn with left stick X (degrees per loop), adjust X with right stick X.
-        double turnInput = -gamepad1.left_stick_x * 5.0; // degrees per loop
-        double xChange = gamepad1.right_stick_x * 0.1;   // units per loop
-
-        if (Math.abs(turnInput) > 1e-6) {
-            location.turn(turnInput);
+        if (gamepad1.a) {
+            robotLocation.turn(0.1);
+        } else if (gamepad1.b) {
+            robotLocation.turn(-0.1);
         }
-        if (Math.abs(xChange) > 1e-6) {
-            location.changeX(xChange);
+        if (gamepad1.dpad_left) {
+            robotLocation.changeX(-0.1);
+        } else if (gamepad1.dpad_right) {
+            robotLocation.changeX(0.1);
         }
-
-        telemetry.addData("Raw angle", location.getAngle());
-        telemetry.addData("Normalized heading", location.getHeading());
-        telemetry.addData("X position", location.getX());
-        telemetry.update();
+        telemetry.addData("Location", robotLocation);
+        telemetry.addData("Heading", robotLocation.getHeading());
     }
 }
 
-/* Package-private helper kept in the same file */
 class RobotLocation_5_2 {
-    private double angle;
-    private double x;
+    double angle;
+    double x;
 
-    public RobotLocation_5_2(double angle, double x) {
+    public RobotLocation_5_2(double angle) {
         this.angle = angle;
-        this.x = x;
     }
 
     public double getHeading() {
-        double a = this.angle;
-        while (a > 180) {
-            a -= 360;
+        double angle = this.angle;
+        while (angle > 180) {
+            angle -= 360;
         }
-        while (a < -180) {
-            a += 360;
+        while (angle < -180) {
+            angle += 360;
         }
-        return a;
+        return angle;
     }
 
     @Override
