@@ -74,7 +74,9 @@ public class ProgrammingBoard {
         return motor.getCurrentPosition() / ticksPerRotation;
     }
 
-    // TODO: Exercise 7.1 - Add setZeroPowerBehavior() method
+    public void setMotorZeroBehavior(DcMotor.ZeroPowerBehavior behavior) {
+        motor.setZeroPowerBehavior(behavior);
+    }
 
     // Chapter 8: Servo methods
     public void setServoPosition(double position) {
@@ -84,6 +86,14 @@ public class ProgrammingBoard {
     // Chapter 9: Potentiometer methods
     public double getPotVoltage() {
         return pot.getVoltage();
+    }
+
+    public double getPotRange() {
+        return pot.getVoltage() / pot.getMaxVoltage();
+    }
+
+    public double getPotAngle() {
+        return getPotRange() * 270.0;
     }
 
     // TODO: Exercise 9.1 - Add getPotPosition() method that returns [0.0..1.0]
@@ -97,7 +107,9 @@ public class ProgrammingBoard {
         return colorSensor.green();
     }
 
-    // TODO: Exercise 10.1 - Add getAmountBlue() method
+    public int getAmountBlue() {
+        return colorSensor.blue();
+    }
 
     public double getDistance(DistanceUnit unit) {
         return distanceSensor.getDistance(unit);
