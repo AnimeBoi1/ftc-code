@@ -18,6 +18,7 @@ public class Chapter14_1 extends OpMode { // defines our class extending OpMode 
     @Override // indicates we're overriding a method from the parent class
     public void init() { // called once when INIT is pressed on Driver Station
         board.init(hardwareMap); // initializes all hardware devices using the robot's hardware map
+        tests = board.getTests(); // populates the test list from the ProgrammingBoard
     }
 
     @Override // indicates we're overriding a method from the parent class

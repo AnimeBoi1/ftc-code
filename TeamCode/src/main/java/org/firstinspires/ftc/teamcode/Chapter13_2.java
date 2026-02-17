@@ -14,6 +14,8 @@ public class Chapter13_2 extends OpMode { // defines our class extending OpMode 
 
     @Override // indicates we're overriding a method from the parent class
     public void init() { // called once when INIT is pressed on Driver Station
+        lineIndex = 0; // starts at the first line of the song
+        lines.clear(); // clears the list in case init() is called again
         lines.add("Then he waddled away"); // adds line 0 to the list
         lines.add("(Waddle waddle)"); // adds line 1 to the list
         lines.add("Then he waddled away"); // adds line 2 to the list
@@ -21,8 +23,8 @@ public class Chapter13_2 extends OpMode { // defines our class extending OpMode 
         lines.add("Then he waddled away"); // adds line 4 to the list
         lines.add("(Waddle waddle)"); // adds line 5 to the list
         lines.add("'Til the very next day"); // adds line 6 to the list
-        lines.add("(Bum bum bum bum bum ba-dum)"); // adds line 7 to the list (last line)
-        lineIndex = 0; // starts at the first line of the song
+        lines.add("(Bum bum bum bum bum ba-dum)"); // adds line 7 to the list
+        lines.add(""); // adds empty line for visual pause between loops
     }
 
     @Override // indicates we're overriding a method from the parent class
@@ -30,7 +32,7 @@ public class Chapter13_2 extends OpMode { // defines our class extending OpMode 
         if (nextTime < getRuntime()) { // checks if it's time to advance to the next line
             lineIndex++; // moves to the next line
             if (lineIndex >= lines.size()) { // checks if we've gone past the last line (uses size() for ArrayList)
-                lineIndex = lines.size() - 1; // stays on the last line (prevents overflow)
+                lineIndex = 0; // wraps back to the beginning to replay the song
             }
             nextTime = getRuntime() + DELAY_SECS; // schedules the next line change
         }

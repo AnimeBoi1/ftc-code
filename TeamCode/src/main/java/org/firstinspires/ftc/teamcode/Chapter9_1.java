@@ -16,6 +16,7 @@ public class Chapter9_1 extends OpMode { // defines our class extending OpMode f
 
     @Override // indicates we're overriding a method from the parent class
     public void loop() { // called repeatedly while the OpMode is running
-        telemetry.addData("Pot Angle", board.getPotAngle()); // displays the potentiometer angle reading on Driver Station
+        double potValue = board.getPotRange(); // gets potentiometer value in range [0.0..1.0]
+        telemetry.addData("Pot Value", potValue); // displays the potentiometer range value on Driver Station
     }
 }

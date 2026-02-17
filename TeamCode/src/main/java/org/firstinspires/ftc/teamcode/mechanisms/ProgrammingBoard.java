@@ -14,6 +14,8 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
+import java.util.ArrayList;
+
 /**
  * ProgrammingBoard class for Learn Java for FTC exercises.
  * This class encapsulates hardware access for the programming board.
@@ -30,6 +32,10 @@ public class ProgrammingBoard {
 
     private double ticksPerRotation;
 
+    /**
+     * Initializes all hardware on the programming board.
+     * @param hwMap the hardware map from the opMode
+     */
     public void init(HardwareMap hwMap) {
         // Touch sensor (Chapter 6)
         touchSensor = hwMap.get(DigitalChannel.class, "touch_sensor");
@@ -58,18 +64,30 @@ public class ProgrammingBoard {
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD)));
     }
 
-    // Chapter 6: Touch Sensor methods
+    /**
+     * @return whether the touch sensor is pressed or not
+     */
     public boolean isTouchSensorPressed() {
         return !touchSensor.getState();
     }
 
-    // TODO: Exercise 6.1 - Add isTouchSensorReleased() method
+    /**
+     * @return whether the touch sensor is released or not
+     */
+    public boolean isTouchSensorReleased() {
+        return touchSensor.getState();
+    }
 
-    // Chapter 7: Motor methods
+    /**
+     * @param speed the speed (-1.0 to 1.0) where negative is backwards
+     */
     public void setMotorSpeed(double speed) {
         motor.setPower(speed);
     }
 
+    /**
+     * @return returns the number of rotations from the encoder
+     */
     public double getMotorRotations() {
         return motor.getCurrentPosition() / ticksPerRotation;
     }
@@ -78,12 +96,16 @@ public class ProgrammingBoard {
         motor.setZeroPowerBehavior(behavior);
     }
 
-    // Chapter 8: Servo methods
+    /**
+     * @param position the position (0.0-1.0) for the servo
+     */
     public void setServoPosition(double position) {
         servo.setPosition(position);
     }
 
-    // Chapter 9: Potentiometer methods
+    /**
+     * @return the raw voltage from the potentiometer
+     */
     public double getPotVoltage() {
         return pot.getVoltage();
     }
@@ -92,13 +114,20 @@ public class ProgrammingBoard {
         return pot.getVoltage() / pot.getMaxVoltage();
     }
 
+    /**
+     * @return the angle (0 - 270) the potentiometer is pointed to
+     */
     public double getPotAngle() {
         return getPotRange() * 270.0;
     }
 
-    // TODO: Exercise 9.1 - Add getPotPosition() method that returns [0.0..1.0]
+    public double getPotPosition() {
+        return pot.getVoltage() / pot.getMaxVoltage();
+    }
 
-    // Chapter 10: Color/Distance methods
+    /**
+     * @return the amount red (0-255) the color sensor sees
+     */
     public int getAmountRed() {
         return colorSensor.red();
     }
@@ -111,16 +140,35 @@ public class ProgrammingBoard {
         return colorSensor.blue();
     }
 
+    /**
+     * @param unit what units to return distance in
+     * @return distance seen by distance sensor
+     */
     public double getDistance(DistanceUnit unit) {
         return distanceSensor.getDistance(unit);
     }
 
-    // Chapter 11: IMU methods
+    /**
+     * @param unit what units to return the angle in
+     * @return the heading (Z axis of the IMU)
+     */
     public double getHeading(AngleUnit unit) {
         return imu.getRobotYawPitchRollAngles().getYaw(unit);
     }
 
     public void resetHeading() {
         imu.resetYaw();
+    }
+
+    /**
+     * @return a list of tests for the hardware on the board - used by TestWiring
+     */
+    public ArrayList<TestItem> getTests() {
+        ArrayList<TestItem> tests = new ArrayList<>();
+        tests.add(new TestMotor("PB Motor", 0.5, motor));
+        tests.add(new TestAnalogInput("PB Pot", pot, 0, 270));
+        tests.add(new TestDigitalChannel("PB Touch", touchSensor));
+        tests.add(new TestServo("PB Servo", servo, 0.0, 1.0));
+        return tests;
     }
 }

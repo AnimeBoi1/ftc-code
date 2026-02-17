@@ -1,86 +1,75 @@
 package org.firstinspires.ftc.teamcode; // declares which package this class belongs to
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous; // imports the Autonomous annotation for autonomous mode
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS; // imports SparkFun Optical Tracking Odometry Sensor
 import com.qualcomm.robotcore.eventloop.opmode.OpMode; // imports the OpMode base class for iterative programs
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp; // imports the TeleOp annotation for driver-controlled mode
 
-/**
- * Exercise 21.1: Combine Sparkfun OTOS with AprilTags for improved accuracy.
- *
- * Strategy: Use OTOS for continuous tracking, correct with AprilTag when visible.
- * OTOS drifts over time, AprilTags provide absolute position but need line of sight.
- */
-@Autonomous() // marks this class as an Autonomous program (runs without driver control)
-public class Chapter21_1 extends OpMode { // defines our class extending OpMode for iterative execution
-    // Position tracking variables (would come from OTOS in real implementation)
-    double otosX = 0; // X position from Optical Tracking Odometry Sensor
-    double otosY = 0; // Y position from OTOS
-    double otosHeading = 0; // heading from OTOS
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName; // imports WebcamName for camera access
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF; // imports VectorF for field position vectors
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit; // imports AngleUnit for angle measurement
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit; // imports DistanceUnit for distance measurement
+import org.firstinspires.ftc.vision.VisionPortal; // imports VisionPortal for camera pipeline
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection; // imports AprilTagDetection for tag data
+import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc; // imports AprilTagPoseFtc for pose data
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor; // imports AprilTagProcessor for tag detection
 
-    // AprilTag correction values (would come from VisionPortal)
-    double aprilTagX = 0; // X position calculated from AprilTag
-    double aprilTagY = 0; // Y position from AprilTag
-    boolean aprilTagVisible = false; // whether an AprilTag is currently detected
+import java.util.List; // imports List for detection results
 
-    // Fused position (best estimate combining both sensors)
-    double fusedX = 0; // final X position after sensor fusion
-    double fusedY = 0; // final Y position after sensor fusion
-    double fusedHeading = 0; // final heading after sensor fusion
-
-    // Simulated time for demo
-    double lastAprilTagTime = 0; // timestamp when AprilTag was last seen
+@TeleOp // marks this class as a TeleOp program
+public class Chapter21_1 extends OpMode { // Exercise 21.1: OTOS + AprilTag fusion
+    private AprilTagProcessor aprilTagProcessor; // processes camera frames to detect AprilTags
+    private VisionPortal visionPortal; // manages the camera and vision processing pipeline
+    SparkFunOTOS sparkfunOTOS; // Sparkfun Optical Tracking Odometry Sensor for continuous position tracking
 
     @Override // indicates we're overriding a method from the parent class
     public void init() { // called once when INIT is pressed on Driver Station
-        telemetry.addLine("Exercise 21.1: OTOS + AprilTag Fusion"); // displays exercise title
-        telemetry.addLine("Press A to simulate AprilTag detection"); // displays simulation instructions
+        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1"); // gets webcam from hardware map
+        sparkfunOTOS = hardwareMap.get(SparkFunOTOS.class, "otos"); // gets OTOS sensor from hardware map
+        configureOTOS(); // configures the OTOS sensor settings
+        aprilTagProcessor = AprilTagProcessor.easyCreateWithDefaults(); // creates AprilTag processor with default settings
+        visionPortal = VisionPortal.easyCreateWithDefaults(webcamName, aprilTagProcessor); // creates vision portal with webcam and processor
+    }
+
+    private void configureOTOS() { // configures the Sparkfun OTOS sensor
+        sparkfunOTOS.setLinearUnit(DistanceUnit.INCH); // sets distance unit to inches
+        sparkfunOTOS.setAngularUnit(AngleUnit.DEGREES); // sets angle unit to degrees
+        sparkfunOTOS.setOffset(new SparkFunOTOS.Pose2D(0, 0, 0)); // sets sensor offset from robot center
+        sparkfunOTOS.setLinearScalar(1.0); // sets linear scaling factor (adjust for accuracy)
+        sparkfunOTOS.setAngularScalar(1.0); // sets angular scaling factor (adjust for accuracy)
+        sparkfunOTOS.resetTracking(); // resets the tracking position to zero
+        sparkfunOTOS.setPosition(new SparkFunOTOS.Pose2D(0, 0, 0)); // sets initial position
+        sparkfunOTOS.calibrateImu(255, false); // calibrates the IMU with 255 samples
     }
 
     @Override // indicates we're overriding a method from the parent class
     public void loop() { // called repeatedly while the OpMode is running
-        // Simulate OTOS drift over time
-        otosX += 0.01; // simulates gradual position drift
-        otosY += 0.005; // simulates gradual Y drift
-        otosHeading += 0.1; // simulates heading drift
+        List<AprilTagDetection> currentDetections = aprilTagProcessor.getDetections(); // gets all currently detected AprilTags
+        StringBuilder idsFound = new StringBuilder(); // builds a string of detected tag IDs
 
-        // Simulate AprilTag detection when A is pressed
-        aprilTagVisible = gamepad1.a; // simulates AprilTag visibility with A button
-        if (aprilTagVisible) { // when AprilTag is "detected"
-            aprilTagX = 24.0; // simulated absolute X position from AprilTag (inches)
-            aprilTagY = 48.0; // simulated absolute Y position from AprilTag (inches)
-            lastAprilTagTime = getRuntime(); // records when AprilTag was last seen
+        SparkFunOTOS.Pose2D pose2D = sparkfunOTOS.getPosition(); // gets current OTOS position
+
+        for (AprilTagDetection detection : currentDetections) { // iterates through each detected AprilTag
+            sparkfunOTOS.setPosition(convertFromAprilTag( // corrects OTOS position using AprilTag data
+                    detection.metadata.fieldPosition, detection.ftcPose, pose2D.h));
+            idsFound.append(detection.id); // adds detected tag ID to the string
+            idsFound.append(' '); // adds space separator between IDs
         }
 
-        // Sensor Fusion: When AprilTag visible, snap to its position
-        // Otherwise, use OTOS with accumulated drift
-        double timeSinceAprilTag = getRuntime() - lastAprilTagTime; // calculates time since last AprilTag sighting
-        if (timeSinceAprilTag < 0.5) { // if AprilTag was seen recently (within 0.5 seconds)
-            fusedX = aprilTagX; // trusts AprilTag position for X
-            fusedY = aprilTagY; // trusts AprilTag position for Y
-            // Reset OTOS offset to match AprilTag (in real code)
-        } else { // if no recent AprilTag data
-            fusedX = otosX; // falls back to OTOS position (with drift)
-            fusedY = otosY; // falls back to OTOS Y position
-        }
-        fusedHeading = otosHeading; // heading typically from OTOS (AprilTag heading less reliable)
+        telemetry.addData("April Tags", idsFound); // displays which AprilTags are seen
+        SparkFunOTOS.Pose2D pos = sparkfunOTOS.getPosition(); // gets the corrected position
+        telemetry.addData("X (inch)", pos.x); // displays X position in inches
+        telemetry.addData("Y (inch)", pos.y); // displays Y position in inches
+        telemetry.addData("Heading (degrees)", pos.h); // displays heading in degrees
+    }
 
-        // Display sensor fusion results
-        telemetry.addLine("=== OTOS (drifts over time) ==="); // section header for OTOS data
-        telemetry.addData("OTOS X", "%.2f in", otosX); // displays OTOS X position
-        telemetry.addData("OTOS Y", "%.2f in", otosY); // displays OTOS Y position
-
-        telemetry.addLine("=== AprilTag (absolute, when visible) ==="); // section header for AprilTag data
-        telemetry.addData("AprilTag Visible", aprilTagVisible ? "YES" : "No"); // displays AprilTag visibility
-        if (aprilTagVisible) { // only shows AprilTag position when visible
-            telemetry.addData("AprilTag X", "%.2f in", aprilTagX); // displays AprilTag X position
-            telemetry.addData("AprilTag Y", "%.2f in", aprilTagY); // displays AprilTag Y position
-        }
-
-        telemetry.addLine("=== Fused Position (best estimate) ==="); // section header for fused data
-        telemetry.addData("Fused X", "%.2f in", fusedX); // displays fused X position
-        telemetry.addData("Fused Y", "%.2f in", fusedY); // displays fused Y position
-        telemetry.addData("Heading", "%.1f deg", fusedHeading); // displays heading
-
-        telemetry.addLine(""); // blank line for spacing
-        telemetry.addLine("Hold A to simulate seeing AprilTag"); // reminder for simulation controls
+    private SparkFunOTOS.Pose2D convertFromAprilTag(VectorF fieldPosition, // converts AprilTag detection to OTOS position
+                                                     AprilTagPoseFtc pose, double heading) {
+        SparkFunOTOS.Pose2D pose2D = new SparkFunOTOS.Pose2D(); // creates new pose for the converted position
+        pose2D.x = fieldPosition.get(0) + pose.x; // combines field position with camera offset for X
+        pose2D.y = fieldPosition.get(1) + pose.y; // combines field position with camera offset for Y
+        pose2D.h = heading; // keeps the current heading from OTOS
+        // TODO: Convert from Camera position to Robot Center
+        // this is different for every robot so you'll have to do this.
+        return pose2D; // returns the fused position
     }
 }

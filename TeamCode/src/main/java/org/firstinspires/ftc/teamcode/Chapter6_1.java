@@ -16,6 +16,6 @@ public class Chapter6_1 extends OpMode { // defines our class extending OpMode f
 
     @Override // indicates we're overriding a method from the parent class
     public void loop() { // called repeatedly while the OpMode is running
-        telemetry.addData("Touch sensor Released", !board.isTouchSensorPressed()); // displays true if touch sensor is NOT pressed (released)
+        telemetry.addData("Touch sensor Released", board.isTouchSensorReleased()); // displays true when the touch sensor is released
     }
 }
